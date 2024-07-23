@@ -971,6 +971,6 @@ async function fetchPaths() {
       }
     }
   } catch (error) {
-    document.getElementById("tooltip").innerText = `Request failed: ${error}`;
+    document.getElementById("tooltip").innerText = `(server band hai! ) Request failed: ${error}`;
   }
 }
