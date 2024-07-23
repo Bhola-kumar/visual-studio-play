@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visual Studio Player</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- section 1 -->
+
+    <div class="header">
+      <button
+        id="hamburger-btn"
+        class="hamburger-btn"
+        aria-label="Toggle Side Bar"
+      >
+        <span class="hamburger-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6H20M4 12H20M4 18H20"
+              stroke="#000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+      </button>
+      <div class="title-name">Visual Studio Player</div>
+    </div>
+    <!-- section 2  -->
+
+    <div class="container" id="container">
+      <!-- section 2.1 -->
+      <div class="overlay" id="overlay"></div>
+      <div class="side-bar" id="side-bar">
+        <div id="videoExplorer" class="videoExplorer">
+          <div class="tooltip" id="tooltip"></div>
+          <h3 class="explorer-head" id="explorer-head">Explorer</h3>
+          <div class="chooseSpace" id="chooseSpace">
+            <h5>Set WorkSpace</h5>
+            <form id="pathForm" onsubmit="submitForm(event)">
+              <!-- <label for="folder_path">Folder Path:</label> -->
+              <input type="text" id="folder_path" name="folder_path" required />
+              <button id="setSpace" type="submit">Set</button>
+            </form>
+            <!-- <button type="button" onclick="fetchPaths()">Fetch Paths</button> -->
+            <div id="response"></div>
+            
+          </div>
+          <div class="breadcrumb-bar" id="breadcrumb-bar">
+            <nav id="breadcrumb" aria-label="Breadcrumb Navigation"></nav>
+            <div
+              class="back-item-explorer"
+              data-name=".."
+              id="back-item-explorer"
+            >
+              ..
+            </div>
+          </div>
+
+          <div id="exploreList" class="exploreList" role="list">
+            <div class="emptySection" id="emptySection">
+              <div class="emptySectionText">No Playlists or Videos</div>
+            </div>
+            <div id="folderSection" class="folderSection">
+              <div class="folder-header" id="folderHeader">Playlists</div>
+              <div class="folderListDiv" id="folderListDiv">
+                <ul id="folderList-ul" class="folderList-ul"></ul>
+              </div>
+            </div>
+            <div id="videoSection" class="videoSection">
+              <div class="video-header" id="videoHeader">Videos</div>
+              <div class="videoListDiv" id="videoListDiv">
+                <ul id="videoList-ul" class="videoList-ul"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- section 2.2 -->
+      <div class="right-bar">
+        <!-- section 2.2.1 -->
+        <div class="select-feature" id="select-feature">
+          <div class="toggleSwitchtemp"></div>
+          <div class="available-feature">
+            <div class="feature-d" id="feature-d">download</div>
+            <div class="feature-dc" id="feature-dc">download & convert</div>
+            <div class="feature-c" id="feature-c">convert</div>
+          </div>
+          <div class="toggleSwitch" id="toggleSwitch">
+            <label class="t">
+              <input type="checkbox" id="toggle-checkbox" />
+              <span class="toggle-slider"> </span>
+            </label>
+          </div>
+        </div>
+        <div class="featureDiv" id="featureDiv">
+          <!-- only download -->
+          <div class="youtube-downloader" id="youtube-downloader">
+            <div class="input-container-d">
+              <div class="input-container-bar-d">
+                <input
+                  type="text"
+                  id="youtubeUrl-d"
+                  placeholder="Enter YouTube playlist or video link"
+                  aria-label="Video URL"
+                />
+              </div>
+              <div class="input-container-button-d">
+                <button id="downloadButton" aria-label="Download Video">
+                  Download
+                </button>
+              </div>
+            </div>
+
+            <div id="dstatus" class="dstatus" role="status">
+              <span>Downloading Status</span>
+            </div>
+          </div>
+          <!-- download and convert -->
+          <div
+            class="youtube-downloader-and-convertor"
+            id="youtube-downloader-and-convertor"
+          >
+            <div class="input-container-dandc">
+              <div class="input-container-bar-dandc">
+                <input
+                  type="text"
+                  id="youtubeUrl"
+                  placeholder="Enter YouTube playlist or video link"
+                  aria-label="Video URL"
+                />
+              </div>
+              <div class="input-container-button-dandc">
+                <button
+                  id="downloadAndconvertButton"
+                  aria-label="Download and Convert Video"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+
+            <div id="dandcstatus" class="dandcstatus" role="status">
+              <span>Downloading and Conversion Status</span>
+            </div>
+          </div>
+          <!-- converter -->
+          <div class="video-convertor" id="video-convertor">
+            <div class="input-container-c">
+              <div class="input-container-bar-c" id="input-container-bar-c">
+                <div class="input-browse-path">
+                  <input
+                    type="text"
+                    id="localvideoPath"
+                    placeholder="Enter local video file/folder path"
+                    aria-label="Video URL"
+                    readonly
+                  />
+                  <div class="drop-browse-box" id="drop-browse-box">
+                    <div class="browse-box" id="browse-box">
+                      <div class="browse-box-folder">
+                        <div class="browse-box-folder-head">Folder</div>
+                        <div
+                          class="browse-box-folder-list"
+                          id="browse-box-folder-list"
+                        >
+                          <ul id="browse-box-folder-list-ul"></ul>
+                        </div>
+                      </div>
+                      <div class="browse-box-file">
+                        <div class="browse-box-file-head">File</div>
+                        <div
+                          class="browse-box-file-list"
+                          id="browse-box-file-list"
+                        >
+                          <ul id="browse-box-file-list-ul"></ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="back-item-browse"
+                  data-name=".."
+                  id="back-item-browse"
+                >
+                  ..
+                </div>
+                <button id="browseButton" aria-label="Browse Video">
+                  Browse
+                </button>
+              </div>
+
+              <div class="input-container-button-c">
+                <button id="convertButton" aria-label="Convert Video">
+                  Convert
+                </button>
+              </div>
+            </div>
+
+            <div id="cstatus" class="cstatus" role="status">
+              <span>Conversion Status</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- section 2.2.2 -->
+
+        <div class="media-player">
+          <div class="video-here" id="video-here">
+            <video
+              id="videoPlayer"
+              class="videoPlayer"
+              controls
+              aria-label="Video Player"
+            >
+              <source
+                id="videoSource"
+                class="videoSource"
+                src=""
+                type="video/mp4"
+              />
+            </video>
+            <div class="placeholder" id="placeholder">
+              <div class="placeholder-text">No Video Selected</div>
+            </div>
+          </div>
+          <div class="video-controls">
+            <button id="prevButton" aria-label="Previous Video">
+              Previous
+            </button>
+            <div id="vstatus" class="vstatus" role="status">
+              <span>Video Status</span>
+            </div>
+            <button id="nextButton" aria-label="Next Video">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
