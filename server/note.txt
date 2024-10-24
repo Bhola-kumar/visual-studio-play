@@ -1,0 +1,13 @@
+start_videohost.bat
+
+@echo off
+cd D:\GitHub\visual-studio-play\server
+vplay\Scripts\activate
+python app.py
+
+
+start_videohost.vbs
+
+Set WshShell = CreateObject("WScript.Shell")
+WshShell.Run "D:\GitHub\visual-studio-play\server\start_videohost.bat", 0
+Set WshShell = Nothing

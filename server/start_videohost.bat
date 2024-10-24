@@ -1,3 +1,3 @@
 @echo off
-cd C:\Users\e430272\Desktop\bhole\videoHost\app
+cd D:\GitHub\visual-studio-play\server
 python app.py

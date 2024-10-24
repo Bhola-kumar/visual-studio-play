@@ -15,7 +15,7 @@ CORS(app)
 
 def convert_video(video_path, output_path):
     try:
-        ffmpeg_path = 'C:/ffmpeg/bin/ffmpeg.exe'  # Replace with the actual path to ffmpeg
+        ffmpeg_path = '"D:/GitHub/visual-studio-play/ffmpeg/ffmpeg.exe"'  # Replace with the actual path to ffmpeg
 
         # Example command using FFmpeg
         command = f'{ffmpeg_path} -i "{video_path}" -c:v copy -c:a libvorbis "{output_path}" -vn'
@@ -79,12 +79,13 @@ def browse_videos():
         return jsonify(items)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+folder_path = 'D:/GitHub/visual-studio-play/server/default'
 @app.route('/set_paths', methods=['POST'])
 def set_paths():
     global DOWNLOAD_DIR, OUTPUT_DIR
 
     folder_path = request.form.get('folder_path')
+    print(folder_path)
     if not folder_path:
         return jsonify({"error": "No folder path provided"}), 400
 
