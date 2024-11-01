@@ -79,30 +79,46 @@ def browse_videos():
         return jsonify(items)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-folder_path = 'D:/GitHub/visual-studio-play/server/default'
 @app.route('/set_paths', methods=['POST'])
 def set_paths():
     global DOWNLOAD_DIR, OUTPUT_DIR
 
     folder_path = request.form.get('folder_path')
-    print(folder_path)
+    # set pre defined path if not provided by user
+    # print(folder_path)
+    message =["No folder path provided , setting the default one.","Please provide the complete path , setting the default one.","Paths set successfully"]
+    actionMessage = 0
     if not folder_path:
-        return jsonify({"error": "No folder path provided"}), 400
+        folder_path = 'D:/GitHub/visual-studio-play/server/default'
+        actionMessage = 0
+        # return jsonify({"error": "No folder path provided , setting the default one."}), 400
+    # check for no relative path ,complete path only
+    if not os.path.isabs(folder_path):
+        folder_path = 'D:/GitHub/visual-studio-play/server/default'
+        actionMessage = 1
+        # message = "Please provide the complete path , setting the default one."
+        # return jsonify({"error": "Please provide the complete path , setting the default one."}), 400
+    
+    if folder_path:
+        # Check for 'downloads' directory
+        downloads_path = os.path.join(folder_path, 'downloads')
+        if not os.path.exists(downloads_path):
+            os.makedirs(downloads_path)
+        DOWNLOAD_DIR = downloads_path
 
-    # Check for 'downloads' directory
-    downloads_path = os.path.join(folder_path, 'downloads')
-    if not os.path.exists(downloads_path):
-        os.makedirs(downloads_path)
-    DOWNLOAD_DIR = downloads_path
+        # Check for 'converted_videos' directory
+        converted_videos_path = os.path.join(folder_path, 'converted_videos')
+        if not os.path.exists(converted_videos_path):
+            os.makedirs(converted_videos_path)
+        OUTPUT_DIR = converted_videos_path
 
-    # Check for 'converted_videos' directory
-    converted_videos_path = os.path.join(folder_path, 'converted_videos')
-    if not os.path.exists(converted_videos_path):
-        os.makedirs(converted_videos_path)
-    OUTPUT_DIR = converted_videos_path
+        if actionMessage == 1 :
+            pass
+        else:
+            actionMessage = 2
 
     return jsonify({
-        "message": "Paths set successfully"
+        "message": message[actionMessage]
     })
 @app.route('/get_paths', methods=['GET'])
 def get_paths():

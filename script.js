@@ -12,6 +12,7 @@ let mapstoreIndex = new Map();
 let countdownInterval;
 
 document.addEventListener("DOMContentLoaded", () => {
+  viewExplorer();
   fetchAvailableVideos();
   initializeDownloader();
   initializeDownloadAndConvert();
@@ -19,7 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeVideoExplorer();
   initializeBrowseFeature();
 });
-
+function viewExplorer() {
+  if (currentPath) {
+    document.getElementById("emptySection").style.display = "none";
+    document.getElementById("folderSection").style.display = "block";
+    document.getElementById("videoSection").style.display = "block";
+  } else {
+    document.getElementById("folderSection").style.display = "none";
+    document.getElementById("videoSection").style.display = "none";
+  }
+};
 function initializeVideoExplorer() {
   document
     .getElementById("exploreList")
