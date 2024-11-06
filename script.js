@@ -10,10 +10,11 @@ let videoListArray = [];
 let currentVideoIndex = -1;
 let mapstoreIndex = new Map();
 let countdownInterval;
+let flagForBrowser = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   viewExplorer();
-  fetchAvailableVideos();
+  // fetchAvailableVideos();
   initializeDownloader();
   initializeDownloadAndConvert();
   initializeConvertor();
@@ -579,6 +580,7 @@ function initializeBrowseFeature() {
 
 async function fetchAndDisplayBrowseVideos() {
   try {
+    if(flagForBrowser){
     const response = await fetch(
       `http://127.0.0.1:5000/browse_videos?path=${browsePath}`
     );
@@ -620,10 +622,21 @@ async function fetchAndDisplayBrowseVideos() {
     if (selectedBrowseFile) {
       localvideoPath.value = `${browsePath}/${selectedBrowseFile}`;
     } else {
-      localvideoPath.value = browsePath
-        ? browsePath
-        : "No file/folder selected";
+      if(browsePath){
+        localvideoPath.value = browsePath;
+      }
+      else{
+        localvideoPath.placeholder = "Please set the workspace";
+      }
+      // localvideoPath.value = browsePath
+      //   ? browsePath
+      //   : "No file/folder selected";
     }
+  }
+  else{
+    const localvideoPath = document.getElementById("localvideoPath");
+    localvideoPath.placeholder = "Please set the workspace";
+  }
   } catch (error) {
     console.log("Failed to browse videos: " + error.message);
   }
@@ -670,7 +683,11 @@ function createConvertTask(filename, cstatusDiv) {
       if (filename.startsWith("/")) {
         filename = filename.slice(1);
       }
-
+      if(!filename){
+        cstatusDiv.textContent = "Please browse a file/folder to convert.";
+        // cstatusDiv.textContent = "Conversion Status";
+        return;
+      }
       cstatusDiv.textContent = "Converting...";
 
       const response = await fetch(
@@ -923,6 +940,9 @@ async function submitForm(event) {
 
     const result = await response.json();
     if (response.ok) {
+      flagForBrowser = true;
+      const localvideoPath = document.getElementById("localvideoPath");
+      localvideoPath.placeholder = "No file/folder selected";
       document.getElementById("response").innerText = `${result.message}`; //successfully set path
       fetchAvailableVideos();
       document.getElementById("folder_path").value = "";

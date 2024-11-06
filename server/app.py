@@ -143,6 +143,8 @@ def serve_video(filename):
 
 @app.route('/convert/<path:filename>', methods=['POST'])
 def convert_video_request(filename):
+    if filename == '':  # Check if filename is provided
+        return jsonify({"error": "Filename is required"}), 400
     video_path = os.path.join(DOWNLOAD_DIR, filename)
 
     # Security check
