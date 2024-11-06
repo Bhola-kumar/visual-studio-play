@@ -498,6 +498,7 @@ function initializeBrowseFeature() {
   const folderList = document.getElementById("browse-box-folder-list-ul");
   const fileList = document.getElementById("browse-box-file-list-ul");
   browseButton.addEventListener("click", () => {
+    if(flagForBrowser){
     const overlay = document.getElementById("overlay");
     if (!overlay.style.display) {
       overlay.style.display = "none";
@@ -517,7 +518,7 @@ function initializeBrowseFeature() {
       dropbrowseBox.style.maxHeight = "0px";
       browseButton.innerText = "Browse";
     }
-
+  }
     fetchAndDisplayBrowseVideos();
   });
 
